@@ -23,6 +23,7 @@ AQUI = Path(__file__).resolve().parent
 sys.path.insert(0, str(AQUI))
 import classificar  # noqa: E402
 import extrair  # noqa: E402
+import extrair_ofegar  # noqa: E402
 
 VENV = Path(os.environ.get("KK_WHISPER_VENV", Path.home() / ".local/share/kk-mascote/whisper"))
 
@@ -79,6 +80,10 @@ def preparar(boneca):
         cats.write_text(json.dumps(categorias, ensure_ascii=False, indent=1) + "\n")
         print(f"c{cod}: categorias automáticas em {cats.name} (revisão manual opcional)")
     extrair.extrair(boneca)
+    try:  # respiração ofegante (opcional no menu); falha aqui não impede as vozes cotidianas
+        extrair_ofegar.extrair_boneca(boneca)
+    except Exception as exc:
+        print(f"{boneca}: sem respiração ofegante ({exc})")
 
 
 if __name__ == "__main__":

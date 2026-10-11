@@ -60,11 +60,13 @@ var mensagens = preload("res://mensagens.gd").new()
 var efeitos = preload("res://efeitos.gd").new()
 var celular = preload("res://celular.gd").new()
 var sons_reacao = preload("res://sons_reacao.gd").new()
+var ofegar = preload("res://ofegar.gd").new()
 var dedos_mensagem: SkeletonModifier3D
 var modo_mensagens := true
 var hana_auto := true
 var hana_cerebro := "claude"
 var sons_ligados := true
+var ofegar_ligado := false
 # Resposta escrita no celular (chat) em vez de falada; voz sintética só quando ligada no menu.
 var escrita = preload("res://escrita.gd").new()
 var escrevendo := false
@@ -222,6 +224,7 @@ func _ready() -> void:
 	add_child(sprite)
 	add_child(efeitos)
 	add_child(sons_reacao)
+	add_child(ofegar)
 	mensagens.fase_mudou.connect(atualizar_fase_mensagem)
 	criar_indicador_mensagem()
 	add_child(balao)
@@ -372,6 +375,7 @@ func ler_desktop() -> void:
 			if cmd is Dictionary:
 				if cmd.has("boneca_seguinte"): boneca_seguinte()
 				if cmd.has("estado"): mudar(cmd.estado, 60)
+				if cmd.has("ofegar"): ofegar.disparar(clampf(float(cmd.ofegar),3,120),"comando")
 				if cmd.get("fala") is Dictionary: receber_fala(cmd.fala)
 				if cmd.has("pos"):
 					fisica.pos = Vector2(cmd.pos[0], cmd.pos[1])
@@ -393,6 +397,11 @@ func _process(dt: float) -> void:
 		sons_reacao.carregar_vozes()
 	mensagens.escrever = modo_mensagens
 	sons_reacao.passo(dt,(mensagens.fase=="digitando" and mensagens.ativo) or (escrevendo and escrita.batendo()),escondida)
+	ofegar.ligado = ofegar_ligado
+	if ofegar.boneca != boneca:
+		ofegar.boneca = boneca
+		ofegar.carregar()
+	ofegar.passo(dt,sem_roupa(),toque_ativo and regiao_toque in ofegar.INTIMAS,escondida)
 	efeitos.visible = not escondida
 	indicador_mensagem.visible = mensagens.ativo and not escondida and not mensagens.legenda().is_empty()
 	dedos_mensagem.ligado = ((mensagens.ativo and mensagens.fase=="digitando") or (escrevendo and escrita.batendo())) and not escondida
@@ -869,6 +878,15 @@ func acao_menu(texto: String) -> void:
 		montar_menu_mensagens()
 		salvar()
 		return
+	if texto.begins_with("Respiração ofegante:"):
+		ofegar_ligado = not ofegar_ligado
+		montar_menu_mensagens()
+		salvar()
+		return
+	if texto == "Ofegar agora":
+		ofegar.disparar(30,"comando")
+		menu.hide()
+		return
 	if texto.begins_with("Sons de reação:"):
 		sons_ligados = not sons_ligados
 		if not sons_ligados: sons_reacao.encerrar()
@@ -1067,6 +1085,7 @@ func carregar() -> void:
 		hana_auto = bool(dados.get("hana_auto",true))
 		hana_cerebro = "local" if str(dados.get("hana_cerebro","claude")) == "local" else "claude"
 		sons_ligados = bool(dados.get("sons_reacao",true))
+		ofegar_ligado = bool(dados.get("ofegar",false))
 		voz_sintetica = bool(dados.get("voz_sintetica",false))
 		modo_toque = str(dados.get("modo_toque","Pegar e mover"))
 		if modo_toque not in ["Pegar e mover","Acariciar","Apalpar"]: modo_toque = "Pegar e mover"
@@ -1153,6 +1172,15 @@ func registrar_roupas() -> void:
 		if str(tipo).begins_with("acessorio_"):
 			pecas_roupa[tipo] = "Acessório %d" % (str(tipo).get_slice("_",1).to_int()+1)
 	aplicar_roupas()
+
+func sem_roupa() -> bool:
+	var ocultas: Array = roupas_ocultas.get(boneca, [])
+	var pecas := 0
+	for tipo in pecas_roupa:
+		if not str(tipo).begins_with("roupa_"): continue
+		pecas += 1
+		if not tipo in ocultas: return false
+	return pecas > 0
 
 func aplicar_roupas() -> void:
 	var ocultas: Array = roupas_ocultas.get(boneca, [])
@@ -1272,7 +1300,7 @@ func recarregar_boneca() -> bool:
 	return true
 
 func preferencias() -> Dictionary:
-	return {"versao":12,"roupa_modo":roupa_modo,"hana_auto":hana_auto,"hana_cerebro":hana_cerebro,"estilo_anime":estilo_anime,"modo_mensagens":modo_mensagens,"sons_reacao":sons_ligados,"voz_sintetica":voz_sintetica,"atuacao_natural":atuacao_natural,"fisicas_ligadas":fisicas_ligadas,"maos_suaves":maos_suaves,"modo_toque":modo_toque,"expressao":expressao,"fala_automatica":fala_automatica,"roupas_ocultas":roupas_ocultas,"fixa":fisica.fixa,"boneca":boneca,"posicao":[fisica.pos.x,fisica.pos.y],"escala":zoom,"modo":"perfil" if perfil else ("retrato" if retrato else "passeio"),"moldura":moldura,"posicao_retrato":[pos_retrato.x,pos_retrato.y]}
+	return {"versao":12,"roupa_modo":roupa_modo,"hana_auto":hana_auto,"hana_cerebro":hana_cerebro,"estilo_anime":estilo_anime,"modo_mensagens":modo_mensagens,"sons_reacao":sons_ligados,"ofegar":ofegar_ligado,"voz_sintetica":voz_sintetica,"atuacao_natural":atuacao_natural,"fisicas_ligadas":fisicas_ligadas,"maos_suaves":maos_suaves,"modo_toque":modo_toque,"expressao":expressao,"fala_automatica":fala_automatica,"roupas_ocultas":roupas_ocultas,"fixa":fisica.fixa,"boneca":boneca,"posicao":[fisica.pos.x,fisica.pos.y],"escala":zoom,"modo":"perfil" if perfil else ("retrato" if retrato else "passeio"),"moldura":moldura,"posicao_retrato":[pos_retrato.x,pos_retrato.y]}
 
 func preparar_retrato() -> void:
 	var metade := TAM * zoom * 0.5
@@ -1412,6 +1440,11 @@ func passo_facial(dt: float, fechamento: float) -> void:
 		rosto.dinamica = atuacao.intensidade_reacao()
 	if atuacao_natural and fala_texto.ativo and not atuacao.face_atual.has("intensidade"):
 		rosto.dinamica = 0.86+0.06*sin(atuacao.tempo*1.4)
+	if ofegar.ativo() and not fala_texto.ativo and not mensagens.ativo and expressao == "Automática" and not dorme:
+		# Corada (Timidez → Vergonha fofa no estilo anime) e boca acompanhando a respiração.
+		emocao_atual = "Timidez"
+		abertura = maxf(abertura, ofegar.abertura())
+		vogal = "a"
 	if estilo_anime and not dorme:
 		emocao_atual = PERFIS_ANIME.get(emocao_atual,emocao_atual)
 		rosto.dinamica = 1.0
@@ -1795,7 +1828,7 @@ func criar_indicador_mensagem() -> void:
 
 func montar_menu_mensagens() -> void:
 	menu_roupas = true
-	preencher_menu(["Voltar","Modo mensagens: ligado" if modo_mensagens else "Modo mensagens: desligado","Hana responde sozinha: ligada" if hana_auto else "Hana responde sozinha: desligada","Cérebro da Hana: local (Ollama)" if hana_cerebro == "local" else "Cérebro da Hana: Claude","Sons de reação: ligados" if sons_ligados else "Sons de reação: desligados","Voz sintética: ligada" if voz_sintetica else "Voz sintética: desligada","Prévia: leitura","Prévia: surpresa","Prévia: confusão","Prévia: alegria","Prévia: ousadia"])
+	preencher_menu(["Voltar","Modo mensagens: ligado" if modo_mensagens else "Modo mensagens: desligado","Hana responde sozinha: ligada" if hana_auto else "Hana responde sozinha: desligada","Cérebro da Hana: local (Ollama)" if hana_cerebro == "local" else "Cérebro da Hana: Claude","Sons de reação: ligados" if sons_ligados else "Sons de reação: desligados","Respiração ofegante: ligada" if ofegar_ligado else "Respiração ofegante: desligada","Ofegar agora","Voz sintética: ligada" if voz_sintetica else "Voz sintética: desligada","Prévia: leitura","Prévia: surpresa","Prévia: confusão","Prévia: alegria","Prévia: ousadia"])
 
 func atualizar_fase_mensagem() -> void:
 	ocioso = 0

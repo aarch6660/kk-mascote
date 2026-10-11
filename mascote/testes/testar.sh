@@ -27,6 +27,7 @@ godot_bin="${GODOT:-$HOME/.local/opt/godot/godot}"
 "$godot_bin" --headless --path . --script testes/atuacao.gd
 "$godot_bin" --headless --audio-driver Dummy --path . --script testes/mensagens.gd
 "$godot_bin" --headless --audio-driver Dummy --path . --script testes/escrita.gd
+"$godot_bin" --headless --audio-driver Dummy --path . --script testes/ofegar.gd
 "$godot_bin" --headless --audio-driver Dummy --path . --script testes/hana.gd
 "$godot_bin" --headless --audio-driver Dummy --path . --script testes/hana_etapa2.gd
 "$godot_bin" --headless --audio-driver Dummy --path . --script testes/hana_etapa3.gd
