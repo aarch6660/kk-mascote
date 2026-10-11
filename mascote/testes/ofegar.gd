@@ -31,9 +31,9 @@ func testar() -> void:
 		app.trocar_boneca(b.id)
 		app.ofegar.boneca = b.id
 		app.ofegar.carregar()
-		verificar(app.ofegar.clipes.size() == 4, b.id+": quatro loops originais")
+		verificar(app.ofegar.clipes.size() == 2, b.id+": dois loops originais do Idle calmo")
 		for c in app.ofegar.clipes:
-			verificar(str(c.texto).contains("はぁはぁ") and str(c.arquivo).begins_with("ofegar/h_ko_"), b.id+": só respiração ofegante h_ko")
+			verificar(str(c.texto) == "すぅ……はぁ……" and str(c.arquivo).begins_with("ofegar/h_ko_"), b.id+": só a respiração calma escolhida (h_ko)")
 			verificar(FileAccess.file_exists("res://bonecas/%s/vozes/%s" % [b.id,c.arquivo]), b.id+": arquivo existe")
 	var o = app.ofegar
 	# Desligado: nenhum gatilho automático.
@@ -83,6 +83,17 @@ func testar() -> void:
 	verificar(app.sem_roupa(), "todas as peças ocultas = sem roupa")
 	app.roupas_ocultas[app.boneca] = todas.slice(1)
 	verificar(not app.sem_roupa(), "uma peça ainda vestida")
+	# Rosto: corada durante a crise e de volta ao normal depois (com e sem estilo anime).
+	for anime in [false,true]:
+		app.estilo_anime = anime
+		app.emocao_atual = "Neutra"
+		o.disparar(1.0,"comando")
+		o.passo(0.1,false,false,false)
+		app.passo_facial(1.0/30,0)
+		verificar(app.emocao_atual == ("Vergonha fofa" if anime else "Timidez"), "corada durante a crise, anime=%s" % anime)
+		avancar(o, 3.0)
+		app.passo_facial(1.0/30,0)
+		verificar(not o.ativo() and app.emocao_atual == "Neutra", "rosto volta ao normal depois, anime=%s" % anime)
 	# Preferência salva.
 	app.ofegar_ligado = true
 	verificar(app.preferencias().get("ofegar") == true, "preferência gravada")

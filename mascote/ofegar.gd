@@ -1,5 +1,6 @@
 extends AudioStreamPlayer
-# Respiração ofegante original (bonecas/<id>/vozes/ofegar.json, ver vozes/extrair_ofegar.py).
+# Respiração original, alta (bonecas/<id>/vozes/ofegar.json, ver vozes/extrair_ofegar.py).
+# Nível escolhido pelo usuário: Idle calmo 「すぅ……はぁ……」, para incomodar; --nivel ofegante troca.
 # Gatilhos: toque em região íntima, sem roupa (de tempos em tempos), aleatório e comando/menu.
 # Os automáticos só valem com a preferência ligada; o comando explícito sempre toca.
 const INTIMAS := ["Mamilo esquerdo","Mamilo direito","Seio esquerdo","Seio direito","Região genital","Nádega esquerda","Nádega direita"]

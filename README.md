@@ -8,7 +8,9 @@
 > The rule from day one: **use what the game itself has** (its meshes, shaders, animation clips,
 > physics settings and voice lines), reproduced faithfully, instead of substitutes made up by the project.
 
-![Four characters animated in real time](docs/media/animations.gif)
+![Haruno Chika, the demo model, animated in real time](docs/media/animations.gif)
+
+*Demo model: **Haruno Chika**. Any Koikatsu card can be imported the same way.*
 
 ---
 
@@ -57,12 +59,7 @@ lines for the character's personality and renders a private proof image.
 
 ![Twelve expressions with anime effects](docs/media/expressions.png)
 
-<details>
-<summary><b>All four characters × three outfits</b> (click to expand)</summary>
-
-![Outfits](docs/media/outfits.png)
-
-</details>
+![Haruno Chika in her three outfits: uniform, casual and pajamas](docs/media/outfits.png)
 
 ![Hair and skirt physics during a celebration](docs/media/celebrate.gif)
 

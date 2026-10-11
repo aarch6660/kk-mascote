@@ -64,9 +64,10 @@ func gravar() -> void:
 		ordem += 1
 	app.rosto.aplicar("Neutra",0,"",0,1)
 	# Animações com física: corpo inteiro, 30 fps fixos.
-	var clipes := {"chika-haruno":["gesto_ajeitar_cabelo","comemorar_02"],"sawai-hinata":["conversa_gesto_03","stand_joy_03"],"mizuno-ayaka":["gesto_olhar_longe"],"aihara-rena":["celular_em_pe"]}
+	# README: só a Chika como modelo de demonstração (pedido do usuário).
+	var clipes := {"chika-haruno":["gesto_ajeitar_cabelo","comemorar_02","conversa_gesto_03","gesto_olhar_longe","celular_em_pe"]}
 	for b in clipes:
-		preparar(app,b,"casual" if b=="sawai-hinata" else "uniforme")
+		preparar(app,b,"uniforme")
 		corpo(app)
 		app.chika.rotation.y = 0.25
 		app.secundario.active = true

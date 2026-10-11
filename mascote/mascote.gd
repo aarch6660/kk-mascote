@@ -67,6 +67,7 @@ var hana_auto := true
 var hana_cerebro := "claude"
 var sons_ligados := true
 var ofegar_ligado := false
+var rosto_ofegante := false
 # Resposta escrita no celular (chat) em vez de falada; voz sintética só quando ligada no menu.
 var escrita = preload("res://escrita.gd").new()
 var escrevendo := false
@@ -1445,6 +1446,11 @@ func passo_facial(dt: float, fechamento: float) -> void:
 		emocao_atual = "Timidez"
 		abertura = maxf(abertura, ofegar.abertura())
 		vogal = "a"
+		rosto_ofegante = true
+	elif rosto_ofegante:
+		# Fim da crise: devolve o rosto em vez de deixá-la corada para sempre.
+		rosto_ofegante = false
+		if emocao_atual in ["Timidez","Vergonha fofa"]: emocao_atual = "Neutra"
 	if estilo_anime and not dorme:
 		emocao_atual = PERFIS_ANIME.get(emocao_atual,emocao_atual)
 		rosto.dinamica = 1.0
