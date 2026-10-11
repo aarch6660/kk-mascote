@@ -1,0 +1,80 @@
+{
+  "tons": {
+    "neutro": {
+      "emocao": "Neutra",
+      "efeito": "nenhum",
+      "som": "nenhum"
+    },
+    "curioso": {
+      "emocao": "Curiosidade",
+      "efeito": "nenhum",
+      "som": "duvida"
+    },
+    "surpreso": {
+      "emocao": "Surpresa",
+      "efeito": "surpresa",
+      "som": "surpresa"
+    },
+    "confuso": {
+      "emocao": "Dúvida",
+      "efeito": "espirais",
+      "som": "duvida"
+    },
+    "alegre": {
+      "emocao": "Riso",
+      "efeito": "alegria",
+      "som": "alegria"
+    },
+    "triste": {
+      "emocao": "Tristeza",
+      "efeito": "nenhum",
+      "som": "suspiro"
+    },
+    "ousado": {
+      "emocao": "Surpresa",
+      "efeito": "ideia",
+      "som": "surpresa"
+    },
+    "chocado": {
+      "emocao": "Espanto",
+      "efeito": "surpresa",
+      "som": "choque"
+    },
+    "irritado": {
+      "emocao": "Birra",
+      "efeito": "raiva",
+      "som": "resmungo"
+    },
+    "pensativo": {
+      "emocao": "Pensativa",
+      "efeito": "nenhum",
+      "som": "pensando"
+    }
+  },
+  "efeitos": [
+    "nenhum",
+    "espirais",
+    "surpresa",
+    "alegria",
+    "ideia",
+    "lagrimas",
+    "raiva",
+    "coracoes",
+    "estrelas",
+    "suor",
+    "rubor",
+    "interrogacao",
+    "desanimo"
+  ],
+  "sons": [
+    "nenhum",
+    "surpresa",
+    "duvida",
+    "alegria",
+    "choque",
+    "resmungo",
+    "suspiro",
+    "pensando",
+    "concordar"
+  ]
+}

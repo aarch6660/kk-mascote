@@ -1,0 +1,1 @@
+../mascote/colisores_kk.gd

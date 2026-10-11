@@ -1,0 +1,1 @@
+../mascote/fisica_kk_modificador.gd

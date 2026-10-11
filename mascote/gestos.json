@@ -1,0 +1,261 @@
+{
+  "emocoes": {
+    "Neutra": [],
+    "Felicidade": [
+      "stand_joy_00",
+      "stand_joy_01",
+      "stand_joy_02",
+      "stand_joy_03",
+      "stand_joy_04",
+      "stand_joy_05",
+      "stand_joy_06",
+      "stand_joy_07",
+      "stand_joy_08",
+      "stand_joy_09",
+      "comemorar_03"
+    ],
+    "Raiva": [
+      "stand_ang_00",
+      "stand_ang_01",
+      "stand_ang_02"
+    ],
+    "Tristeza": [
+      "stand_sad_00",
+      "stand_sad_01",
+      "stand_sad_02"
+    ],
+    "Medo": [
+      "reacao_defesa"
+    ],
+    "Surpresa": [
+      "stand_oth_01",
+      "stand_oth_08"
+    ],
+    "Preocupação": [
+      "stand_sad_01"
+    ],
+    "Confiança": [
+      "stand_joy_04"
+    ],
+    "Timidez": [
+      "stand_oth_00",
+      "stand_oth_02",
+      "stand_oth_04",
+      "stand_oth_05",
+      "stand_oth_06"
+    ],
+    "Pensativa": [],
+    "Seriedade": [],
+    "Tédio": [],
+    "Riso": [
+      "stand_joy_00",
+      "stand_joy_01",
+      "stand_joy_02",
+      "stand_joy_03",
+      "stand_joy_04",
+      "stand_joy_05",
+      "stand_joy_06",
+      "stand_joy_07",
+      "stand_joy_08",
+      "stand_joy_09",
+      "comemorar_03"
+    ],
+    "Curiosidade": [],
+    "Dúvida": [],
+    "Desânimo": [
+      "stand_sad_00",
+      "stand_sad_01",
+      "stand_sad_02"
+    ],
+    "Choro": [
+      "stand_sad_00",
+      "stand_sad_01",
+      "stand_sad_02"
+    ],
+    "Sorriso travesso": [
+      "stand_joy_00",
+      "stand_joy_01",
+      "stand_joy_02",
+      "stand_joy_03",
+      "stand_joy_04",
+      "stand_joy_05",
+      "stand_joy_06",
+      "stand_joy_07",
+      "stand_joy_08",
+      "stand_joy_09"
+    ],
+    "Piscadela esquerda": [],
+    "Piscadela direita": [],
+    "Gargalhada": [
+      "stand_joy_00",
+      "stand_joy_01",
+      "stand_joy_02",
+      "stand_joy_03",
+      "stand_joy_04",
+      "stand_joy_05",
+      "stand_joy_06",
+      "stand_joy_07",
+      "stand_joy_08",
+      "stand_joy_09",
+      "comemorar_03"
+    ],
+    "Espanto": [
+      "stand_oth_01",
+      "stand_oth_08"
+    ],
+    "Encantada": [
+      "stand_joy_00",
+      "stand_joy_01",
+      "stand_joy_02",
+      "stand_joy_03",
+      "stand_joy_04",
+      "stand_joy_05",
+      "stand_joy_06",
+      "stand_joy_07",
+      "stand_joy_08",
+      "stand_joy_09",
+      "comemorar_03"
+    ],
+    "Pânico cômico": [
+      "reacao_defesa"
+    ],
+    "Birra": [
+      "stand_ang_00",
+      "stand_ang_01",
+      "stand_ang_02"
+    ],
+    "Choro dramático": [
+      "stand_sad_00",
+      "stand_sad_01",
+      "stand_sad_02"
+    ],
+    "Vergonha fofa": [
+      "stand_oth_00",
+      "stand_oth_02",
+      "stand_oth_04",
+      "stand_oth_05",
+      "stand_oth_06"
+    ],
+    "Orgulho": [
+      "stand_joy_04"
+    ]
+  },
+  "clipes": {
+    "stand_joy_00": "Alegria 00",
+    "stand_joy_01": "Alegria 01",
+    "stand_joy_02": "Alegria 02",
+    "stand_joy_03": "Alegria 03",
+    "stand_joy_04": "Alegria 04",
+    "stand_joy_05": "Alegria 05",
+    "stand_joy_06": "Alegria 06",
+    "stand_joy_07": "Alegria 07",
+    "stand_joy_08": "Alegria 08",
+    "stand_joy_09": "Alegria 09",
+    "stand_ang_00": "Raiva 00",
+    "stand_ang_01": "Raiva 01",
+    "stand_ang_02": "Raiva 02",
+    "stand_sad_00": "Tristeza 00",
+    "stand_sad_01": "Tristeza 01",
+    "stand_sad_02": "Tristeza 02",
+    "reacao_defesa": "Defesa defesa",
+    "stand_oth_01": "Surpresa 01",
+    "stand_oth_08": "Surpresa 08",
+    "stand_oth_00": "Timidez 00",
+    "stand_oth_02": "Timidez 02",
+    "stand_oth_04": "Timidez 04",
+    "stand_oth_05": "Timidez 05",
+    "stand_oth_06": "Timidez 06",
+    "conversa_00": "Conversa 00",
+    "conversa_01": "Conversa 01",
+    "conversa_02": "Conversa 02",
+    "conversa_03": "Conversa 03",
+    "conversa_04": "Conversa 04",
+    "conversa_05": "Conversa 05",
+    "conversa_06": "Conversa 06",
+    "conversa_07": "Conversa 07",
+    "conversa_08": "Conversa 08",
+    "conversa_09": "Conversa 09",
+    "conversa_10": "Conversa 10",
+    "conversa_11": "Conversa 11",
+    "conversa_12": "Conversa 12",
+    "conversa_13": "Conversa 13",
+    "celular_em_pe": "Celular em pé",
+    "celular_sentada": "Celular sentada",
+    "celular_sentada_2": "Celular sentada: variação",
+    "celular_jogando": "Celular: jogo",
+    "conversa_gesto_00": "Conversa: variação 00",
+    "conversa_gesto_03": "Conversa: variação 03",
+    "conversa_gesto_07": "Conversa: variação 07",
+    "conversa_gesto_11": "Conversa: variação 11",
+    "correr_normal": "Corrida",
+    "correr_zangada": "Corrida zangada",
+    "postura_pensativa": "Gesto de afastar",
+    "comemorar_02": "Comemoração ampla",
+    "comemorar_03": "Comemoração",
+    "sentada_estudo": "Sentada: estudo",
+    "sentada_leitura": "Sentada: leitura",
+    "sentada_musica": "Sentada: música",
+    "caminhar": "Caminhada",
+    "caminhar_zangada": "Caminhada zangada",
+    "gesto_ajeitar_cabelo": "Ajeitar cabelo",
+    "gesto_mao_boca": "Mão na boca",
+    "gesto_olhar_longe": "Olhar longe",
+    "gesto_maos_juntas": "Mãos juntas",
+    "gesto_reverencia": "Reverência"
+  },
+  "novos": [
+    "stand_joy_02",
+    "stand_joy_03",
+    "stand_joy_05",
+    "stand_joy_08",
+    "stand_oth_02",
+    "stand_oth_04",
+    "stand_oth_05",
+    "stand_oth_06",
+    "stand_ang_01",
+    "stand_ang_02",
+    "stand_sad_01",
+    "stand_sad_02"
+  ],
+  "categorias": {
+    "Conversas extras": [
+      "conversa_gesto_00",
+      "conversa_gesto_03",
+      "conversa_gesto_07",
+      "conversa_gesto_11"
+    ],
+    "Cotidiano": [
+      "postura_pensativa",
+      "sentada_estudo",
+      "sentada_leitura",
+      "sentada_musica",
+      "gesto_ajeitar_cabelo",
+      "gesto_mao_boca",
+      "gesto_olhar_longe",
+      "gesto_maos_juntas",
+      "gesto_reverencia"
+    ],
+    "Locomoção": [
+      "caminhar",
+      "caminhar_zangada",
+      "correr_normal",
+      "correr_zangada"
+    ],
+    "Comemoração": [
+      "comemorar_02",
+      "comemorar_03"
+    ]
+  },
+  "pontuais": [
+    "conversa_gesto_00",
+    "conversa_gesto_03",
+    "conversa_gesto_07",
+    "conversa_gesto_11",
+    "comemorar_02",
+    "gesto_ajeitar_cabelo",
+    "gesto_mao_boca",
+    "gesto_olhar_longe",
+    "gesto_maos_juntas",
+    "gesto_reverencia"
+  ]
+}

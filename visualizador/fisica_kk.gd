@@ -1,0 +1,1 @@
+../mascote/fisica_kk.gd

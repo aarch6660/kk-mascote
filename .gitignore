@@ -1,0 +1,80 @@
+# Lista de permissão: só entra o que é código/configuração original do projeto.
+# Nada extraído do jogo (modelos, texturas, animações, áudio, IL/DXBC), nada pessoal, nada de agentes.
+/*
+!/.gitignore
+!/README.md
+!/adicionar-boneca.sh
+!/configurar.sh
+!/personagem/
+!/animacoes/
+!/mascote/
+!/visualizador/
+!/docs/
+
+# Gerado / derivado do jogo, em qualquer pasta
+*.glb
+*.obj
+*.png
+*.jpg
+*.wav
+*.ogg
+*.import
+*.uid
+*.log
+*.asm
+*.cs
+*.il
+*.tres
+*.blend
+*.blend1
+*.npz
+.godot/
+__pycache__/
+evidencias/
+trabalho/
+saida/
+*.antes-*
+
+# Mídia do README (renderizada por mascote/testes/demo_readme.gd, sempre vestidas)
+!/docs/media/*.png
+!/docs/media/*.gif
+
+# Sons de reação sintetizados pelo projeto (não são do jogo)
+!/mascote/sons/*.wav
+
+# personagem/: dados de cards e auditorias da instalação local
+/personagem/card*
+/personagem/pecas.json
+/personagem/proporcoes.json
+/personagem/indice_cab.json
+/personagem/auditoria_*.json
+/personagem/auditoria_cor/
+/personagem/verificacao-godot/*.png
+/personagem/.backup-corporal
+
+# animacoes/: só scripts e a allowlist selecao.json
+/animacoes/*.json
+!/animacoes/selecao.json
+/animacoes/candidatas/
+/animacoes/exportados/
+/animacoes/previa/
+/animacoes/godot/
+
+# mascote/: ligações para bonecas, clipes e celular extraídos, notas de agentes
+/mascote/bonecas
+/mascote/personagem.glb
+/mascote/materiais_kk.json
+/mascote/texturas
+/mascote/anims/
+/mascote/celular_jogo/*
+!/mascote/celular_jogo/extrair.py
+/mascote/hana/ESPEC-*.md
+/mascote/testes/provar_expression_kk.py
+
+# visualizador/: mesmas ligações e clipes
+/visualizador/bonecas
+/visualizador/personagem.glb
+/visualizador/materiais_kk.json
+/visualizador/texturas
+/visualizador/anims/
+/personagem/saida

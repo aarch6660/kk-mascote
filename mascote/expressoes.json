@@ -1,0 +1,217 @@
+{
+  "perfis": {
+    "Neutra": [
+      "def_op",
+      "def_op",
+      "def_cl"
+    ],
+    "Felicidade": [
+      "bisyou_op",
+      "def_op",
+      "niko_cl"
+    ],
+    "Raiva": [
+      "ikari_op",
+      "oko_op",
+      "ikari_cl"
+    ],
+    "Tristeza": [
+      "kanasi_op",
+      "rakutan_op",
+      "def_cl"
+    ],
+    "Medo": [
+      "aseri_op",
+      "huan_op",
+      "def_cl"
+    ],
+    "Surpresa": [
+      "aseri_op",
+      "odoro_op",
+      "def_cl"
+    ],
+    "Preocupação": [
+      "komaru_op",
+      "koma_op",
+      "human_cl"
+    ],
+    "Confiança": [
+      "doya_op",
+      "doya_op",
+      "doya_cl"
+    ],
+    "Timidez": [
+      "tere_op",
+      "koma_op",
+      "doki_cl"
+    ],
+    "Pensativa": [
+      "sian_op",
+      "sianL_op",
+      "def_cl"
+    ],
+    "Seriedade": [
+      "sinken_op",
+      "sinken_op",
+      "sinken03_cl"
+    ],
+    "Tédio": [
+      "tumara_op",
+      "tmara_op",
+      "human_cl"
+    ],
+    "Riso": [
+      "egao_op",
+      "def_op",
+      "uresi_cl"
+    ],
+    "Curiosidade": [
+      "def_op",
+      "gimoL_op",
+      "def_cl"
+    ],
+    "Dúvida": [
+      "sian_op",
+      "gimoR_op",
+      "human_cl"
+    ],
+    "Desânimo": [
+      "rakutan_op",
+      "rakutan_op",
+      "human_cl"
+    ],
+    "Choro": [
+      "naki_op",
+      "koma_op",
+      "def_cl"
+    ],
+    "Sorriso travesso": [
+      "bisyou_op",
+      "doya_op",
+      "neko_cl"
+    ],
+    "Piscadela esquerda": [
+      "winkl_op",
+      "winkl_op",
+      "niko_cl"
+    ],
+    "Piscadela direita": [
+      "winkr_op",
+      "winkr_op",
+      "niko_cl"
+    ],
+    "Gargalhada": [
+      "egao_op",
+      "def_op",
+      "uresi_cl"
+    ],
+    "Espanto": [
+      "aseri_op",
+      "odoro_op",
+      "def_cl"
+    ],
+    "Encantada": [
+      "bisyou_op",
+      "doya_op",
+      "niko_cl"
+    ],
+    "Pânico cômico": [
+      "komaru_op",
+      "huan_op",
+      "human_cl"
+    ],
+    "Birra": [
+      "ikari_op",
+      "oko_op",
+      "neko_cl"
+    ],
+    "Choro dramático": [
+      "naki_op",
+      "koma_op",
+      "def_cl"
+    ],
+    "Vergonha fofa": [
+      "tere_op",
+      "koma_op",
+      "doki_cl"
+    ],
+    "Orgulho": [
+      "doya_op",
+      "doya_op",
+      "doya_cl"
+    ]
+  },
+  "caricatos": {
+    "Gargalhada": {"efeito": "alegria", "fechamento": 0.85},
+    "Espanto": {"efeito": "surpresa", "fechamento": 0.0},
+    "Encantada": {"efeito": "coracoes", "fechamento": 0.0},
+    "Pânico cômico": {"efeito": "suor", "fechamento": 0.0},
+    "Birra": {"efeito": "raiva", "fechamento": 0.0},
+    "Choro dramático": {"efeito": "lagrimas", "fechamento": 0.0},
+    "Vergonha fofa": {"efeito": "rubor", "fechamento": 0.0},
+    "Orgulho": {"efeito": "ideia", "fechamento": 0.0}
+  },
+  "formas": {
+    "olhos": [
+      "aseri_op",
+      "bisyou_op",
+      "def_op",
+      "doya_op",
+      "egao_op",
+      "gyul02_op",
+      "gyul_op",
+      "gyur02_op",
+      "gyur_op",
+      "ikari_op",
+      "kanasi_op",
+      "keno_op",
+      "komaru_op",
+      "kurusi_op",
+      "naki_op",
+      "rakutan_op",
+      "setunai_op",
+      "sian_op",
+      "sinken_op",
+      "tere_op",
+      "tumara_op",
+      "winkl_op",
+      "winkr_op"
+    ],
+    "sobrancelhas": [
+      "def_op",
+      "doya_op",
+      "gimoL_op",
+      "gimoR_op",
+      "huan_op",
+      "koma_op",
+      "odoro_op",
+      "oko2L_op",
+      "oko2R_op",
+      "oko_op",
+      "rakutan_op",
+      "sianL_op",
+      "sianR_op",
+      "sinken_op",
+      "tmara_op",
+      "winkl_op",
+      "winkr_op"
+    ],
+    "boca": [
+      "def_cl",
+      "doki_cl",
+      "doki_s_cl",
+      "doki_ss_cl",
+      "doya_cl",
+      "human_cl",
+      "ikari_cl",
+      "mogu_cl",
+      "n_l_cl",
+      "n_s_cl",
+      "neko_cl",
+      "niko_cl",
+      "pero_cl",
+      "sinken03_cl",
+      "uresi_cl"
+    ]
+  }
+}

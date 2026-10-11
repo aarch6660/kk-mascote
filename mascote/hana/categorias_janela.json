@@ -1,0 +1,10 @@
+[
+  {"categoria":"jogo", "classes":["minecraft*", "steam_app_*", "lutris", "gamescope", "com.mojang.minecraft*", "heroic*", "wine*", "org.prismlauncher.*"]},
+  {"categoria":"jogo", "classes":["java", "java-*", "org.lwjgl.*"], "titulo":"minecraft"},
+  {"categoria":"musica", "classes":["spotify", "*spotify*", "rhythmbox", "audacious", "*clementine*", "*strawberry*"]},
+  {"categoria":"codigo", "classes":["code", "code-*", "codium", "*jetbrains*", "emacs", "*neovide*"]},
+  {"categoria":"codigo", "classes":["kitty", "alacritty", "foot", "org.wezfurlong.wezterm", "terminal"], "titulo":"(^|\\W)(n?vim|nano|codex)(\\W|$)"},
+  {"categoria":"video", "classes":["mpv", "vlc", "*celluloid*", "*totem*"]},
+  {"categoria":"video", "classes":["*firefox*", "*chrom*", "brave*"], "titulo":"youtube|netflix|twitch|vimeo"},
+  {"categoria":"navegador", "classes":["*firefox*", "*chrom*", "brave*", "vivaldi*", "zen*"]}
+]
