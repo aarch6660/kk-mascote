@@ -75,7 +75,7 @@ func provar():
   app._process(0.9)
   verificar(app.mensagens.fase=="reagindo" and app.emocao_atual=="Surpresa","reage ao tom recebido")
   app._process(1.2)
-  verificar(app.mensagens.fase=="pensando","pensa um instante antes de escrever")
+  verificar(app.mensagens.fase=="digitando","começa a digitar logo depois de reagir (sem pose de pensar)")
   if DisplayServer.get_name()!="headless":
    app.player.seek(2,true)
    app.player.pause()
@@ -146,7 +146,7 @@ func provar():
  var pendente := {"id":"pendente","autor":"Codex — teste","texto":"Resposta que será interrompida.","emocao":"Confiança","audio":{"arquivo":"pendente.wav"},"preparacao":{"digitacao":3}}
  f = FileAccess.open(runtime.path_join("audio/pendente.wav"),FileAccess.WRITE)
  f.store_string("audio de teste");f.close()
- verificar(app.receber_fala(pendente) and app.mensagens.fase=="pensando","resposta após leitura pula preparação duplicada")
+ verificar(app.receber_fala(pendente) and app.mensagens.fase=="digitando","resposta após leitura pula preparação duplicada")
  app.encerrar_fala("interrompida","clique")
  verificar(not FileAccess.file_exists(runtime.path_join("audio/pendente.wav")),"interromper preparação remove áudio pendente")
  var recibo = JSON.parse_string(FileAccess.get_file_as_string(runtime.path_join("recibos-fala/pendente.json")))

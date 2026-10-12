@@ -60,11 +60,11 @@ func provar():
 	app.ler_atividades()
 	verificar(app.mensagens.autor=="Hana" and app.mensagens.variacao==variacao_antes, "continua também leitura sinalizada pelo terminal")
 	app.mensagens.passo(3)
-	verificar(app.mensagens.fase=="pensando", "aguarda modelo segurando celular")
+	verificar(app.mensagens.fase=="esperando" and app.mensagens.celular() and app.mensagens.emocao()!="Pensativa", "aguarda modelo segurando celular, sem cara de pensar")
 	f = FileAccess.open(runtime.path_join("atividades/a2.json"),FileAccess.WRITE)
 	f.store_string(JSON.stringify({"pid_destino":OS.get_process_id(),"criado_em":Time.get_unix_time_from_system(),"autor":"Hana","tipo":"leitura","preparacao":{"tom":"neutro","duracao":20}})); f.close()
 	app.ler_atividades()
-	verificar(app.mensagens.fase=="pensando" and app.mensagens.restante==20, "modelo lento renova pensamento sem reler")
+	verificar(app.mensagens.fase=="esperando" and app.mensagens.restante>=20, "modelo lento renova a espera sem reler nem encurtar")
 	var fala := {"id":"hana-resposta","autor":"Hana","texto":"Tá, anotei. Vou cobrar.","emocao":"Birra","gesto":"conversa_03","preparacao":{"tom":"irritado"}}
 	verificar(app.receber_fala(fala), "resposta recebe mesma ponte")
 	verificar(app.mensagens.fase=="reagindo", "reage ao tom sem reler")

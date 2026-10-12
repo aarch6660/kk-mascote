@@ -15,7 +15,7 @@ from .memoria import DADOS, data_valida, texto_valido
 
 ROOT = Path(__file__).resolve().parents[1]
 PERSONA = Path(__file__).with_name("PERSONA.md")
-MODELO = "claude-haiku-4-5-20251001"
+MODELO = "claude-haiku-5-5"
 TIMEOUT = 60
 # Cérebro local opcional (Ollama). URL/modelo: env HANA_OLLAMA_URL/HANA_OLLAMA_MODELO
 # ou <dados>/config.json {"ollama_url":..., "ollama_modelo":...}; sem modelo, usa o primeiro instalado.

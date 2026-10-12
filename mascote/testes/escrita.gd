@@ -47,8 +47,37 @@ func linha_do_tempo() -> void:
 	igual.iniciar(texto, 11)
 	verificar(igual.eventos == longo.eventos, "mesma semente, mesmo ritmo")
 
+func bolha_rapida():
+	var M = load("res://mensagens.gd")
+	var m = M.new()
+	var enviadas: Array = []
+	m.mensagem_rapida.connect(func(t): enviadas.append(t))
+	m.permitir_rapida = true
+	m.escrever = true
+	seed(7)
+	m.iniciar({"tom":"neutro","caracteres":10,"distracao":0,"duracao":60},"Usuário","x","Neutra")
+	for i in 600: m.passo(0.1)
+	verificar(enviadas.size()<=1 and m.rapida_em<0, "bolha rápida no máximo uma vez por espera")
+	var sem = M.new()
+	var nenhuma: Array = []
+	sem.mensagem_rapida.connect(func(t): nenhuma.append(t))
+	sem.iniciar({"tom":"neutro","caracteres":10,"distracao":0,"duracao":60},"Usuário","y","Neutra")
+	for i in 600: sem.passo(0.1)
+	verificar(nenhuma.is_empty(), "sem Hana automática não manda bolha rápida")
+	var r = M.new()
+	r.escrever = true
+	r.iniciar({"tom":"neutro","caracteres":10,"distracao":5,"duracao":60},"Usuário","z","Neutra")
+	r.passo(1)
+	r.preparar({"id":"z","autor":"Hana","texto":"oi","preparacao":{"tom":"alegre"}},"Neutra")
+	var ordem: Array = [r.fase]
+	for i in 200:
+		r.passo(0.05)
+		if r.ativo and r.fase != ordem[-1]: ordem.append(r.fase)
+	verificar(ordem == ["distraida","lendo","reagindo","digitando"], "resposta pronta antes de ver: termina a distração, lê, reage e escreve")
+
 func provar():
 	linha_do_tempo()
+	bolha_rapida()
 	var base := "/tmp/kk-escrita-%d" % OS.get_process_id()
 	var runtime := base.path_join("runtime")
 	var chat := base.path_join("chat")
@@ -77,21 +106,37 @@ func provar():
 	app.sons_reacao.stream = null
 	# Usuário escreve na janela de chat.
 	var f := FileAccess.open(runtime.path_join("chat/entrada/00000000000000000001-teste.json"), FileAccess.WRITE)
-	f.store_string("{}"); f.close()
+	f.store_string(JSON.stringify({"texto":"oi, tudo bem? me ajuda com uma coisa"})); f.close()
+	app.hana_auto = false   # sem bolha rápida aqui; ela é testada à parte abaixo
 	app.ler_chat()
-	verificar(app.mensagens.ativo and app.mensagens.fase=="lendo" and app.mensagens.autor=="Usuário", "mensagem do chat: pega o celular e lê")
+	verificar(app.mensagens.ativo and app.mensagens.fase=="distraida" and app.mensagens.autor=="Usuário", "mensagem do chat: ainda não viu")
+	verificar(not app.celular.visible and app.mensagens.fase_publica()=="", "distraída: sem celular e chat mostra online")
 	verificar(DirAccess.get_files_at(runtime.path_join("chat/entrada")).is_empty(), "aviso do chat é consumido")
-	app._process(2.0)
-	app._process(1.2)
-	verificar(app.mensagens.fase=="pensando", "sem resposta ainda: fica pensando")
-	var escrevendo_json = JSON.parse_string(FileAccess.get_file_as_string(runtime.path_join("chat/escrevendo.json")))
-	verificar(escrevendo_json is Dictionary and escrevendo_json.fase=="pensando", "janela de chat vê que ela está pensando")
+	for i in 100:
+		if app.mensagens.fase!="distraida": break
+		app._process(0.1)
+	verificar(app.mensagens.fase=="lendo" and app.celular.visible, "depois de um tempo vê e lê no celular")
+	verificar(absf(app.mensagens.leitura_dur-app.mensagens.tempo_leitura(36))<0.001, "leitura proporcional ao tamanho da mensagem")
+	for i in 100:
+		if app.mensagens.fase=="esperando": break
+		app._process(0.1)
+	verificar(app.mensagens.fase=="esperando" and app.celular.visible, "sem resposta ainda: segura o celular esperando")
+	var publicadas := {}
+	var emocoes := {}
+	for i in 200:
+		app._process(0.1)
+		var viva = JSON.parse_string(FileAccess.get_file_as_string(runtime.path_join("chat/escrevendo.json")))
+		if viva is Dictionary: publicadas[viva.fase] = true
+		emocoes[app.emocao_atual] = true
+	verificar(publicadas.has("digitando") and publicadas.has("visto") and not publicadas.has("pensando"), "chat vê 'digitando…' ligar e desligar, nunca 'pensando'")
+	verificar(not emocoes.has("Pensativa"), "espera sem cara de pensativa")
+	verificar(app.indicador_mensagem.visible == (app.mensagens.legenda()!=""), "legenda acompanha o ciclo")
 	# Resposta do agente chega com outro tom: ela reage de novo (chocada) antes de escrever.
 	var resposta := {"id":"r1","autor":"Claude","texto":"Sério?! Não acredito que você fez isso. Mas tá, vamos consertar juntos com calma, uma coisa de cada vez, combinado?","emocao":"Confiança","preparacao":{"tom":"chocado"},"atuacao":[{"indice":0,"emocao":"Espanto","som":"choque"},{"indice":40,"emocao":"Sorriso travesso","som":"alegria"}]}
 	verificar(app.receber_fala(resposta), "resposta do agente aceita durante a espera do chat")
 	verificar(app.mensagens.fase=="reagindo" and app.emocao_atual=="Espanto", "reage chocada ao receber o tom da resposta")
-	app._process(1.2)
-	verificar(app.mensagens.fase=="pensando", "pensa antes de escrever")
+	app._process(1.0)
+	verificar(app.mensagens.fase=="digitando", "começa a digitar logo depois de reagir")
 	app._process(2.1)
 	app._process(0.01)
 	verificar(app.escrevendo and app.player.current_animation=="celular_digitar" and app.celular.visible, "escreve no celular tocando a tela")

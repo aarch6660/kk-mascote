@@ -74,6 +74,7 @@ var escrevendo := false
 var escrita_estado_anterior := ""
 var voz_sintetica := false
 var chat_assinatura := ""
+var ultima_conversa := -1000.0   # última troca no chat (para o tempo até ela "ver")
 var chat_pasta := OS.get_environment("MASCOTE_CHAT") if not OS.get_environment("MASCOTE_CHAT").is_empty() else OS.get_environment("HOME").path_join(".cache/forja/kk-mascote-chat")
 var indicador_mensagem := PanelContainer.new()
 var legenda_mensagem := Label.new()
@@ -227,6 +228,7 @@ func _ready() -> void:
 	add_child(sons_reacao)
 	add_child(ofegar)
 	mensagens.fase_mudou.connect(atualizar_fase_mensagem)
+	mensagens.mensagem_rapida.connect(enviar_rapida)
 	criar_indicador_mensagem()
 	add_child(balao)
 	add_child(voz)
@@ -397,15 +399,20 @@ func _process(dt: float) -> void:
 		sons_reacao.boneca = boneca
 		sons_reacao.carregar_vozes()
 	mensagens.escrever = modo_mensagens
-	sons_reacao.passo(dt,(mensagens.fase=="digitando" and mensagens.ativo) or (escrevendo and escrita.batendo()),escondida)
+	sons_reacao.passo(dt,mensagens.esta_teclando() or (escrevendo and escrita.batendo()),escondida)
 	ofegar.ligado = ofegar_ligado
 	if ofegar.boneca != boneca:
 		ofegar.boneca = boneca
 		ofegar.carregar()
 	ofegar.passo(dt,sem_roupa(),toque_ativo and regiao_toque in ofegar.INTIMAS,escondida)
 	efeitos.visible = not escondida
-	indicador_mensagem.visible = mensagens.ativo and not escondida and not mensagens.legenda().is_empty()
-	dedos_mensagem.ligado = ((mensagens.ativo and mensagens.fase=="digitando") or (escrevendo and escrita.batendo())) and not escondida
+	var legenda_agora: String = mensagens.legenda()
+	if mensagens.autor=="Prévia visual" and not legenda_agora.is_empty(): legenda_agora = "Prévia · "+legenda_agora
+	if legenda_mensagem.text != legenda_agora:
+		legenda_mensagem.text = legenda_agora
+		indicador_mensagem.reset_size()
+	indicador_mensagem.visible = mensagens.ativo and not escondida and not legenda_agora.is_empty()
+	dedos_mensagem.ligado = (mensagens.esta_teclando() or (escrevendo and escrita.batendo())) and not escondida
 	if escondida:
 		balao.hide()
 		if frame % 15 == 0 and renderizando:
@@ -1429,7 +1436,7 @@ func passo_facial(dt: float, fechamento: float) -> void:
 			# Boca só se mexe com as vozes curtas do jogo; nas pausas, cara de quem pensa.
 			if escrita.estado == "pensando" and atuacao.olhar_tempo <= 0: emocao_atual = "Pensativa"
 			abertura = sons_reacao.abertura()
-	elif mensagens.ativo:
+	elif mensagens.visivel():
 		emocao_atual = mensagens.emocao()
 		rosto.ajustes = {"intensidade":mensagens.intensidade}
 		abertura = sons_reacao.abertura()
@@ -1489,13 +1496,13 @@ func atualizar_olhar() -> void:
 	olhar.alvo = Vector2(atan2(diferenca.x,distancia),atan2(diferenca.y,distancia))
 	if fala_texto.ativo and atuacao.olhar_tempo>0: olhar.alvo = atuacao.olhar_alvo
 	elif escrevendo and escrita.estado=="pensando": olhar.alvo = Vector2(-0.18,-0.1)
-	elif mensagens.ativo and mensagens.fase=="pensando" and fmod(mensagens.tempo,7.0) > 4.5: olhar.alvo = mensagens.olhar()
+	elif mensagens.ativo and mensagens.olhando_voce(): olhar.alvo = mensagens.olhar()
 	elif celular.visible and celular.is_inside_tree():
 		# Olha para a tela do celular: diferença no plano da tela em metros, a ~30 cm do rosto.
 		var tela := sprite.position + (camera.unproject_position(celular.tela_global())-Vector2(sub.size)*0.5)*sprite.scale
 		var metros := (tela-centro)/maxf(1.0,float(sub.size.y)/camera.size*sprite.scale.y)
 		olhar.alvo = Vector2(atan2(metros.x,0.3),atan2(metros.y,0.3))
-	elif mensagens.ativo: olhar.alvo = mensagens.olhar()
+	elif mensagens.visivel(): olhar.alvo = mensagens.olhar()
 	olhar.expressivo = atuacao.cabeca() if atuacao_natural and not estados.estado in ["cochilo","dormindo","arrastando","caindo","pulando"] else Vector3.ZERO
 	if not player.current_animation.begins_with("sentada_"): olhar.expressivo += vida.cabeca()
 	olhar.perto = not estados.estado in ["cochilo","dormindo"]
@@ -1837,6 +1844,10 @@ func montar_menu_mensagens() -> void:
 	preencher_menu(["Voltar","Modo mensagens: ligado" if modo_mensagens else "Modo mensagens: desligado","Hana responde sozinha: ligada" if hana_auto else "Hana responde sozinha: desligada","Cérebro da Hana: local (Ollama)" if hana_cerebro == "local" else "Cérebro da Hana: Claude","Sons de reação: ligados" if sons_ligados else "Sons de reação: desligados","Respiração ofegante: ligada" if ofegar_ligado else "Respiração ofegante: desligada","Ofegar agora","Voz sintética: ligada" if voz_sintetica else "Voz sintética: desligada","Prévia: leitura","Prévia: surpresa","Prévia: confusão","Prévia: alegria","Prévia: ousadia"])
 
 func atualizar_fase_mensagem() -> void:
+	if mensagens.fase=="distraida":
+		# Ainda não viu a mensagem: continua o que estava fazendo.
+		registrar_evento("fase_mensagem",{"atividade_id":mensagens.id,"autor":mensagens.autor,"fase":mensagens.fase,"tom":mensagens.tom})
+		return
 	ocioso = 0
 	fala_restante = 0
 	estados.sono_manual = false
@@ -1883,10 +1894,10 @@ func passo_mensagens(dt: float) -> void:
 		rosto.ajustes = {}
 		emocao_atual = mensagens.emocao_anterior
 		mudar("parada",4)
-	if mensagens.ativo:
+	if mensagens.visivel():
 		ocioso = 0
 		estados.tempo = 0
-		if celular.visible: celular.alinhar(sk,mensagens.fase=="digitando",mensagens.tempo)
+		if celular.visible: celular.alinhar(sk,mensagens.esta_teclando(),mensagens.tempo)
 
 func atualizar_efeitos(fechamento: float) -> void:
 	efeitos.olhos.clear()
@@ -1944,7 +1955,7 @@ func ler_atividades() -> void:
 		if dados.autor=="Hana" and mensagens.ativo and mensagens.autor!="Prévia visual":
 			# A janela de chat pode ter começado a leitura antes do daemon. Renova só a espera.
 			mensagens.autor = "Hana"
-			if mensagens.fase=="pensando": mensagens.restante = float(dados.preparacao.get("duracao",20))
+			if mensagens.fase=="esperando": mensagens.restante = maxf(mensagens.restante,float(dados.preparacao.get("duracao",20)))
 			return
 		cancelar_mensagem("nova leitura")
 		mensagens.iniciar(dados.get("preparacao",{}),dados.autor,arquivo.get_basename(),emocao_atual)
@@ -1988,17 +1999,24 @@ func passo_escrita(dt: float) -> void:
 	if not escrita.ativo: fala_texto.ativo = false
 
 func concluir_escrita() -> void:
+	ultima_conversa = Time.get_unix_time_from_system()
 	gravar_historico(fala_texto.texto, fala_texto.autor)
 	escrevendo = false
 	celular.hide()
 	publicar_chat()
 
-func gravar_historico(texto: String, autor: String) -> void:
+func enviar_rapida(texto: String) -> void:
+	# Bolha curta durante uma espera longa; id próprio para não colidir com a resposta.
+	if not hana_auto or not modo_mensagens: return
+	gravar_historico(texto, "Hana", true)
+	registrar_evento("mensagem_rapida",{"atividade_id":mensagens.id,"texto":texto})
+
+func gravar_historico(texto: String, autor: String, id_novo := false) -> void:
 	if prova and OS.get_environment("MASCOTE_CHAT").is_empty(): return
 	DirAccess.make_dir_recursive_absolute(chat_pasta)
 	var agora := Time.get_unix_time_from_system()
 	var ident := "%020d-%08x" % [int(agora*1000000.0)*1000, randi()]
-	if autor=="Hana" and not fala_texto.id.is_empty() and fala_texto.id.get_file()==fala_texto.id:
+	if not id_novo and autor=="Hana" and not fala_texto.id.is_empty() and fala_texto.id.get_file()==fala_texto.id:
 		ident = fala_texto.id
 		if FileAccess.file_exists(chat_pasta.path_join(ident+"-personagem.json")): return
 	var f := FileAccess.open(chat_pasta.path_join(ident+"-personagem.tmp"), FileAccess.WRITE)
@@ -2014,7 +2032,7 @@ func publicar_chat() -> void:
 	if escrevendo:
 		fase = escrita.estado
 		texto = escrita.visivel()
-	elif mensagens.ativo and mensagens.autor != "Prévia visual": fase = mensagens.fase
+	elif mensagens.ativo and mensagens.autor != "Prévia visual": fase = mensagens.fase_publica()
 	# O carimbo de 2 s mantém o arquivo "vivo" para a janela de chat.
 	var assinatura := "%s|%d|%d" % [fase, texto.length(), int(Time.get_unix_time_from_system()/2.0)]
 	if assinatura == chat_assinatura: return
@@ -2035,7 +2053,19 @@ func ler_chat() -> void:
 	var arquivos := Array(DirAccess.get_files_at(pasta)).filter(func(a): return a.ends_with(".json"))
 	if arquivos.is_empty(): return
 	arquivos.sort()
-	for a in arquivos: DirAccess.remove_absolute(pasta.path_join(a))
+	# Várias mensagens juntas: lê todas (o tempo de leitura soma o texto).
+	var caracteres := 0
+	for a in arquivos:
+		var lido = JSON.parse_string(FileAccess.get_file_as_string(pasta.path_join(a)))
+		if lido is Dictionary: caracteres += str(lido.get("texto","")).length()
+		DirAccess.remove_absolute(pasta.path_join(a))
 	var id: String = arquivos[-1].get_basename()
-	mensagens.iniciar({"tom":"neutro","leitura":1.8,"duracao":60},"Usuário",id,emocao_atual)
-	registrar_evento("mensagem_chat",{"mensagem_id":id})
+	# Tempo até "ver": no meio da conversa vê quase na hora; depois de um silêncio, termina o que fazia.
+	var agora := Time.get_unix_time_from_system()
+	var distracao := randf_range(0.3,1.0) if agora-ultima_conversa < 45.0 else randf_range(1.8,4.5)
+	if Time.get_datetime_dict_from_system().hour < 6: distracao += randf_range(0.5,2.0)
+	if estados.estado in ["cochilo","dormindo"]: distracao += randf_range(2.0,4.0)
+	ultima_conversa = agora
+	mensagens.permitir_rapida = hana_auto
+	mensagens.iniciar({"tom":"neutro","caracteres":caracteres,"distracao":distracao,"duracao":60},"Usuário",id,emocao_atual)
+	registrar_evento("mensagem_chat",{"mensagem_id":id,"distracao":distracao})
