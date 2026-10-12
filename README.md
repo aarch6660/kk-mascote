@@ -8,8 +8,6 @@
 > The rule from day one: **use what the game itself has** (its meshes, shaders, animation clips,
 > physics settings and voice lines), reproduced faithfully, instead of substitutes made up by the project.
 
-![Haruno Chika, the demo model, animated in real time](docs/media/animations.gif)
-
 *Demo model: **Haruno Chika**. Any Koikatsu card can be imported the same way.*
 
 ---
@@ -56,12 +54,6 @@ lines for the character's personality and renders a private proof image.
 | **Voice** | Short original voice lines from the character's personality (surprise, doubt, laughter, sighs…), lip-synced from the audio envelope. |
 | **Chat** | A chat window next to her: she "reads", reacts, thinks and *types* her answer on her in-game phone. |
 | **Companion (optional)** | Hana, a persona with memory, tasks and reminders, driven by Claude or by a local model. |
-
-![Twelve expressions with anime effects](docs/media/expressions.png)
-
-![Haruno Chika in her three outfits: uniform, casual and pajamas](docs/media/outfits.png)
-
-![Hair and skirt physics during a celebration](docs/media/celebrate.gif)
 
 ---
 
@@ -272,7 +264,6 @@ mascote/                Godot app: rendering, physics, faces, behaviour, chat, m
   vozes/                voice transcription / classification / extraction
   testes/               headless suites and private visual proofs
 visualizador/           standalone Godot viewer sharing the same materials
-docs/media/             README images
 bonecas/                generated per machine (git-ignored)
 ```
 
