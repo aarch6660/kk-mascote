@@ -35,9 +35,6 @@ trabalho/
 saida/
 *.antes-*
 
-# Mídia do README (renderizada por mascote/testes/demo_readme.gd, sempre vestidas)
-!/docs/media/*.png
-!/docs/media/*.gif
 
 # Sons de reação sintetizados pelo projeto (não são do jogo)
 !/mascote/sons/*.wav
@@ -78,3 +75,8 @@ saida/
 /visualizador/texturas
 /visualizador/anims/
 /personagem/saida
+
+# Derivados do jogo: falas transcritas, classificações e renders da personagem
+/mascote/vozes/transcricoes_*.json
+/mascote/vozes/categorias_*.json
+/docs/media/
